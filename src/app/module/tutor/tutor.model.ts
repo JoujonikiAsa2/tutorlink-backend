@@ -1,7 +1,5 @@
 import mongoose, { model, Types } from 'mongoose'
 import { TTutor, TutorModel } from './tutor.interface'
-import bcrypt from 'bcrypt'
-import config from '../../config'
 
 const TutorSchema = new mongoose.Schema<TTutor>(
   {

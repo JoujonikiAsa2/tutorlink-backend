@@ -15,7 +15,7 @@ type TUserRole = 'student' | 'tutor' | 'admin';
 const auth = (...requiredRoles: TUserRole[]) => {
     return asyncHandler(async (req, res, next) => {
 
-      const token = req.headers.authorization;
+      const token = req.headers.authorization?.split(' ')[1];
       if (!token) {
         throw new Error('You are not Authorized');
       }
