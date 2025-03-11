@@ -61,7 +61,7 @@ UserSchema.pre('save', async function (next) {
   next()
 })
 
-// set '' after saving password
+
 UserSchema.post('save', function (doc, next) {
   doc.password = ''
   next()
@@ -71,5 +71,12 @@ UserSchema.statics.isUserExists = async function (email: string) {
   const existingUser = await User.findOne({ email }).select('+password')
   return existingUser
 }
+
+UserSchema.statics.isPasswordMatch = async function (
+    password: string,
+    hashPassword: string,
+  ) {
+    return bcrypt.compare(password, hashPassword);
+  };
 
 export const User = model< TUser, UserModel>('User', UserSchema)
