@@ -1,0 +1,1 @@
+export const tutorSearchFields = ['subjects', 'classes',  'medium', 'location']

@@ -65,12 +65,16 @@ const TutorSchema = new mongoose.Schema<TTutor>(
       institute: { type: String, required: true },
       major: { type: String, required: true },
     },
-    preferredClass: {
+    classes: {
       type: [String],
       required: true,
     },
-    preferredSubjects: {
+    subjects: {
       type: [String],
+      required: true,
+    },
+    location: {
+      type: String,
       required: true,
     },
     availability: {
@@ -78,7 +82,7 @@ const TutorSchema = new mongoose.Schema<TTutor>(
       enum: ['available', 'unavailable'],
       default: 'available',
     },
-    tutionFee: {
+    hourlyRate: {
       type: Number,
       required: true,
       min: 0,

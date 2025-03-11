@@ -5,12 +5,12 @@ import config from "../config";
 import { User } from "../module/user/user.model";
 
 export const userRole = {
-    student: 'student',
-    tutor: 'tutor',
-    admin: 'admin',
-}
+  student: 'student',
+  tutor: 'tutor',
+  admin: 'admin',
+} as const;
 
-type TUserRole = 'student' | 'tutor' | 'admin';
+export type TUserRole = keyof typeof userRole;
 
 const auth = (...requiredRoles: TUserRole[]) => {
     return asyncHandler(async (req, res, next) => {

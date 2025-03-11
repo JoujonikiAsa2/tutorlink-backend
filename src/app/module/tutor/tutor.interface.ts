@@ -1,32 +1,32 @@
-import { Model, Types } from "mongoose"
-
+import { Model, Types } from 'mongoose'
 
 export type TTutor = {
-    id:string
-    user: Types.ObjectId
-    name: string
-    email:string
-    password: string
-    phone:string
-    bio: string
-    age: number
-    gender: 'male' | 'female' | 'other'
-    profileImage?: string
-    experience: number
-    medium: string
-    rating:{
-        totalStudent:number,
-        ratingValue:number
-    }
-    educationalBg: {
-        level: string,
-        institute: string,
-        major: string
-    }
-    preferredClass: string[]
-    preferredSubjects: string[]
-    availability: "available" | "anavailable"
-    tutionFee: number
+  id: string
+  user: Types.ObjectId
+  name: string
+  email: string
+  password: string
+  phone: string
+  bio: string
+  age: number
+  gender: 'male' | 'female' | 'other'
+  profileImage?: string
+  experience: number
+  medium: string
+  rating: {
+    totalStudent: number
+    ratingValue: number
+  }
+  educationalBg: {
+    level: string
+    institute: string
+    major: string
+  }
+  classes: string[]
+  subjects: string[]
+  availability: 'available' | 'anavailable'
+  location: string
+  hourlyRate: number
 }
 
 export interface TutorModel extends Model<TTutor> {
