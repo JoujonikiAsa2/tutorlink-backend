@@ -1,8 +1,15 @@
 import mongoose, { model } from 'mongoose'
-import { TUser } from './user.interface'
+import { TUser, UserModel } from './user.interface'
+import bcrypt from 'bcrypt'
+import config from '../../config'
 
-const UserSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema<TUser>(
   {
+    id: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     name: {
       type: String,
       required: true,
@@ -34,7 +41,7 @@ const UserSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ['student', 'tutor', 'admin'],
-      required: true,
+      default: 'student',
     },
     profileImage: {
       type: String,
@@ -44,4 +51,25 @@ const UserSchema = new mongoose.Schema(
     timestamps: true,
   }
 )
-export const User = model<TUser>('User', UserSchema)
+
+UserSchema.pre('save', async function (next) {
+  const user = this
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds)
+  )
+  next()
+})
+
+// set '' after saving password
+UserSchema.post('save', function (doc, next) {
+  doc.password = ''
+  next()
+})
+
+UserSchema.statics.isUserExists = async function (email: string) {
+  const existingUser = await User.findOne({ email }).select('+password')
+  return existingUser
+}
+
+export const User = model< TUser, UserModel>('User', UserSchema)
