@@ -1,13 +1,18 @@
-import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
+import express, { Express, Request, Response } from 'express'
+import dotenv from 'dotenv'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
-dotenv.config();
+dotenv.config()
 
-const app: Express = express();
-const port = process.env.PORT || 3000;
+const app: Express = express()
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Application running successfully");
-});
+app.use(cors({ origin: ['http://localhost:3000', 'http://localhost:3001'] }))
+app.use(cookieParser())
+app.use(express.json())
+
+app.get('/', (req: Request, res: Response) => {
+  res.send('Application running successfully')
+})
 
 export default app
