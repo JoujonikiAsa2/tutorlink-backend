@@ -7,26 +7,41 @@ export type TTutor = {
   email: string
   password: string
   phone: string
-  bio: string
+  bio?: string
   age: number
   gender: 'male' | 'female' | 'other'
-  profileImage?: string
-  experience: number
-  medium: string
-  rating: {
+   profileImage?: string
+  experience?: number
+  medium?: string
+  rating?: {
     totalStudent: number
     ratingValue: number
   }
-  educationalBg: {
-    level: string
+  yourLocation: string
+  secondaryEducation?: {
+    group: string
     institute: string
-    major: string
+    passingYear: string
+    result: string
   }
-  classes: string[]
-  subjects: string[]
+  higherEducation?: {
+    group: string
+    institute: string
+    passingYear: string
+    result: string
+  }
+  graduation?: {
+    studyType: string
+    institute: string
+    department: string
+    passingYear: string
+    result: string
+  }
+  classes?: string[]
+  subjects?: string[]
   availability: 'available' | 'anavailable'
-  location: string
-  hourlyRate: number
+  preferedLocation?: string[]
+  hourlyRate?: number
 }
 
 export interface TutorModel extends Model<TTutor> {

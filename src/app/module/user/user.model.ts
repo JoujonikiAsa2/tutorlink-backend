@@ -43,8 +43,22 @@ const UserSchema = new mongoose.Schema<TUser>(
       enum: ['student', 'tutor', 'admin'],
       default: 'student',
     },
+    age: {
+      type: Number,
+      required: true,
+    },
     profileImage: {
       type: String,
+    },
+    yourLocation: {
+      type: String,
+      required: true,
+    },
+    class: {
+      type: String,
+    },
+    subject: {
+      type: [String],
     },
   },
   {
@@ -61,7 +75,6 @@ UserSchema.pre('save', async function (next) {
   next()
 })
 
-
 UserSchema.post('save', function (doc, next) {
   doc.password = ''
   next()
@@ -73,10 +86,10 @@ UserSchema.statics.isUserExists = async function (email: string) {
 }
 
 UserSchema.statics.isPasswordMatch = async function (
-    password: string,
-    hashPassword: string,
-  ) {
-    return bcrypt.compare(password, hashPassword);
-  };
+  password: string,
+  hashPassword: string
+) {
+  return bcrypt.compare(password, hashPassword)
+}
 
-export const User = model< TUser, UserModel>('User', UserSchema)
+export const User = model<TUser, UserModel>('User', UserSchema)

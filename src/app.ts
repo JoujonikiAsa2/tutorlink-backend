@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import router from './app/routes'
+import globalErrorHandler from './app/middlewares/globalErrorHandler'
 
 dotenv.config()
 
@@ -25,5 +26,7 @@ app.use((req: Request, res: Response) => {
     message: 'Page not found'
   })
 })
+
+app.use(globalErrorHandler)
 
 export default app

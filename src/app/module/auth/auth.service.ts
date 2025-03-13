@@ -7,14 +7,19 @@ import { generateUserId } from '../user/user.utils'
 import { Tutor } from '../tutor/tutor.model'
 import { createToken } from './auth.utils'
 import config from '../../config'
+import ApiError from '../../errors/ApiError'
 
 const registerAsTutor = async (payload: TTutor) => {
+
+  console.log(payload)
   //sert userdata
   const userData: Partial<TUser> = {}
   userData.name = payload?.name
   userData.phone = payload?.phone
   userData.role = 'tutor'
   userData.gender = payload?.gender
+  userData.age = payload?.age
+  userData.yourLocation = payload?.yourLocation
   userData.profileImage = payload?.profileImage
   userData.email = payload?.email
   userData.password = payload?.password
@@ -22,7 +27,7 @@ const registerAsTutor = async (payload: TTutor) => {
   //checking if the user exist
   const isUserExist = await User.isUserExists(payload?.email)
   if (isUserExist) {
-    throw new Error('Email already exist')
+    throw new ApiError('Email already exist', httpStatus.CONFLICT)
   }
 
   // start session
@@ -36,7 +41,7 @@ const registerAsTutor = async (payload: TTutor) => {
     //creating user
     const newUser = await User.create([userData], { session })
     if (!newUser.length) {
-      throw new Error('Failed to create user')
+      throw new ApiError('Failed to create user', httpStatus.BAD_REQUEST)
     }
 
     payload.id = newUser[0].id
@@ -44,8 +49,9 @@ const registerAsTutor = async (payload: TTutor) => {
 
     //create new tutor
     const newTutor = await Tutor.create([payload], { session })
+    console.log("new tutor",newTutor)
     if (!newTutor.length) {
-      throw new Error('Failed to create student')
+      throw new ApiError('Failed to create student', httpStatus.BAD_REQUEST)
     }
 
     //commit the transaction
@@ -60,11 +66,12 @@ const registerAsTutor = async (payload: TTutor) => {
   }
 }
 const registerAsStudent = async (payload: TUser) => {
+  console.log(payload)
   const userId = await generateUserId('student')
   //checking if the user exist
   const isUserExist = await User.isUserExists(payload?.email)
   if (isUserExist) {
-    throw new Error('Email already exist')
+    throw new ApiError('Email already exist', httpStatus.CONFLICT)
   }
 
   const userData = { ...payload, id: 'student-' + userId }
@@ -77,7 +84,7 @@ const login = async (payload: Partial<TUser>) => {
 
   const user = await User.isUserExists(email as string)
   if (!user) {
-    throw new Error('Invalid User')
+    throw new ApiError('Invalid User', httpStatus.NOT_FOUND)
   }
 
   const passwordMatch = await User.isPasswordMatch(
@@ -87,10 +94,12 @@ const login = async (payload: Partial<TUser>) => {
 
   if (!passwordMatch) {
     console.log('password is not match')
-    throw new Error('Password does not match')
+    throw new ApiError('Password does not match', httpStatus.NOT_ACCEPTABLE)
   }
 
     const jwtPayload = {
+      name: user?.name,
+      userId: user?._id,
       email: user?.email,
       role: user?.role,
     };
@@ -106,7 +115,6 @@ const login = async (payload: Partial<TUser>) => {
       config.jwt_refresh_secret as string,
       config.jwt_refresh_expire_in as string,
     );
-    console.log(refreshToken)
   
     return {
       accessToken,
