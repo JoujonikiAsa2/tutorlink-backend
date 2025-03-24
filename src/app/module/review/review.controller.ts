@@ -49,7 +49,6 @@ const updateReview = asyncHandler(async (req, res) => {
 const deleteReview = asyncHandler(async (req, res) => {
   const reviewId = req.params.reviewId
   const result = await reviewServices.deleteReview(reviewId)
-  console.log(result)
   responseHandler(res, {
     statusCode: httpStatus.NO_CONTENT,
     success: true,

@@ -41,7 +41,6 @@ const updateTutor = asyncHandler(async (req, res) => {
 const deleteTutor = asyncHandler(async (req, res) => {
   const tutorId = req.params.tutorId
   const result = await tutorServices.deleteTutor(tutorId)
-  console.log(result)
   responseHandler(res, {
     statusCode: httpStatus.NO_CONTENT,
     success: true,

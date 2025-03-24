@@ -11,7 +11,6 @@ import ApiError from '../../errors/ApiError'
 
 const registerAsTutor = async (payload: TTutor) => {
 
-  console.log(payload)
   //sert userdata
   const userData: Partial<TUser> = {}
   userData.name = payload?.name
@@ -49,7 +48,6 @@ const registerAsTutor = async (payload: TTutor) => {
 
     //create new tutor
     const newTutor = await Tutor.create([payload], { session })
-    console.log("new tutor",newTutor)
     if (!newTutor.length) {
       throw new ApiError('Failed to create student', httpStatus.BAD_REQUEST)
     }
@@ -66,7 +64,6 @@ const registerAsTutor = async (payload: TTutor) => {
   }
 }
 const registerAsStudent = async (payload: TUser) => {
-  console.log(payload)
   const userId = await generateUserId('student')
   //checking if the user exist
   const isUserExist = await User.isUserExists(payload?.email)
@@ -93,7 +90,6 @@ const login = async (payload: Partial<TUser>) => {
   )
 
   if (!passwordMatch) {
-    console.log('password is not match')
     throw new ApiError('Password does not match', httpStatus.NOT_ACCEPTABLE)
   }
 

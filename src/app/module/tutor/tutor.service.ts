@@ -32,7 +32,7 @@ const getAllTutors = async (query: Record<string, unknown>) => {
 
 const getTutorById = async (tutorId: string) => {
   try {
-    const tutor = await Tutor.findById(tutorId).populate('user', '-password')
+    const tutor = await Tutor.findOne({id: tutorId}).populate('user', '-password')
     if (!tutor) {
       throw new ApiError('Tutor does not exist', httpStatus.NOT_FOUND)
     }
@@ -109,8 +109,6 @@ const deleteTutor = async (tutorId: string) => {
 
     // Delete the tutor
     const deletedTutor = await Tutor.findByIdAndDelete(tutorId, { session })
-    console.log(deletedTutor)
-    // Commit transaction
     await session.commitTransaction()
     session.endSession()
 
@@ -118,7 +116,6 @@ const deleteTutor = async (tutorId: string) => {
   } catch (error) {
     await session.abortTransaction()
     session.endSession()
-    console.log(error)
     throw new ApiError(error as string, httpStatus.BAD_REQUEST)
   }
 }

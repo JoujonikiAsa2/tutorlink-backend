@@ -12,7 +12,18 @@ const getAllUser = asyncHandler(async(req, res) =>{
         data: result,
     })
 })
+const getUserByEmail = asyncHandler(async(req, res) =>{
+    const email = req.params.email
+    const result = await userServices.getUserByEmail(email)
+    responseHandler(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Retrived all users successfully',
+        data: result,
+    })
+})
 
 export const userControllers = {
-    getAllUser
+    getAllUser,
+    getUserByEmail
 }

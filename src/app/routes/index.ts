@@ -3,6 +3,7 @@ import { userRoutes } from "../module/user/user.route";
 import { authRoutes } from "../module/auth/auth.route";
 import { tutorRoutes } from "../module/tutor/tutor.route";
 import { reviewsRoutes } from "../module/review/review.route";
+import { subjectRoutes } from "../module/subject/subject.route";
 const router = Router()
 const moduleRoutes = [
     {
@@ -20,6 +21,10 @@ const moduleRoutes = [
     {
         path: '/reviews',
         route: reviewsRoutes
+    },
+    {
+        path: '/subjects',
+        route: subjectRoutes
     }
 ]
 
